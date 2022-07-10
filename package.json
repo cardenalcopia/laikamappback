@@ -2,9 +2,9 @@
   "name": "laikamappback",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "apiRest.js",
   "scripts": {
-    "start":"node main.js"
+    "start":"node apiRest.js"
   },
   "repository": {
     "type": "git",
