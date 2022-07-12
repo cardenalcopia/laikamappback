@@ -5,7 +5,9 @@ const userCtrl = require("../controller/usuario.controller")
 
 router.get("/", userCtrl.getStart);
 router.post("/registro", userCtrl.postUser);
-router.post("/login", userCtrl.postLogin)
+router.post("/login", userCtrl.postLogin);
+router.put("/perfil", userCtrl.putPerfil);
+router.get("/perfil", userCtrl.getPerfil);
 // const bookCtrl= require("../controller/books.controller");
 // // router.get("/libros?id_libro=&id_usuario",bookCtrl.getAll)
 // router.get("/libros",bookCtrl.getAll)
