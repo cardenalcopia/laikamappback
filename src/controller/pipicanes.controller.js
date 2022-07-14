@@ -2,7 +2,7 @@ const { request } = require("express");
 const connection =require("../database")
 function getAllPipi(request,response)
 {
-    let sql = "SELECT * FROM pipican  ";
+    let sql = "SELECT * FROM pipican ORDER BY id_pipican ASC LIMIT 5 ";
     
 
     connection.query(sql, (err, result) => {
