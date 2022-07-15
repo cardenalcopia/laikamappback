@@ -30,4 +30,20 @@ function getOnePipi(request,response)
 
 }
 
-module.exports={getAllPipi,getOnePipi}
+
+function getMapaPipi(request,response)
+{
+    let sql =  "SELECT * FROM pipican";
+
+    connection.query(sql, (err, result) => {
+        if(err){
+            console.log(err);
+        }
+        else{
+            response.send(result);
+        }
+    });
+
+}
+
+module.exports={getAllPipi,getOnePipi, getMapaPipi}
