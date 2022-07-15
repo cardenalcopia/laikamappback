@@ -112,6 +112,24 @@ connection.query(sql, (err, result) => {
 })
 
 }
+function getCreadas2 ( request,response)
+{
+    let sql = " SELECT actividades.titulo , actividades.tipo ,actividades.fecha ,actividades.localizacion,actividades.informacion ,usuario.nombre, usuario.apellidos FROM actividades JOIN usuario ON(actividades.id_usuario = usuario.id_usuario) WHERE actividades.id_usuario= '"+request.query.id_usuario+"' "
+    connection.query(sql, (err, result) => {
+        if( err ){
+            console.log( err );
+        }
+        else{
+            console.log(result);
+            if(result){
+                response.send(result);
+            }
+            else{
+                response.send(result);
+            }
+        }
+    })
+}
 function getCreadas ( request,response)
 {
     let sql = " SELECT actividades.titulo , actividades.tipo ,actividades.fecha ,actividades.localizacion,actividades.informacion ,usuario.nombre, usuario.apellidos FROM actividades JOIN usuario ON(actividades.id_usuario = usuario.id_usuario) WHERE actividades.id_usuario= '"+request.query.id_usuario+"' "
@@ -130,5 +148,37 @@ function getCreadas ( request,response)
         }
     })
 }
+function putCreadas(request,response)
+{
+    let id_actividad = request.body.id_actividad ? request.body.id_actividad : null;
+    let imagen = request.body.imagen? request.body.imagen:null;
+    let titulo = request.body.titulo ? request.body.titulo: null;
+    let tipo = request.body.tipo ? request.body.tipo : null;
+    let fecha = request.body.fecha ? request.body.fecha : null;
+    let hora = request.body.hora ? request.body.hora : null;
+    let precio = request.body.precio ? request.body.precio : null;
+    let localizacion = request.body.localizacion ? request.body.localizacion : null;
+    let maxperros = request.body.maxperros ? request.body.maxperros : null;
+    let informacion = request.body.informacion ? request.body.informacion : null;
+    let id_usuario = request.body.id_usuario ? request.body.id_usuario : null;
+   
+    let params =[imagen,titulo,tipo,fecha,hora,precio,localizacion,maxperros,informacion,id_usuario,id_actividad,]
+    let sql = "UPDATE actividades SET imagen = COALESCE(?, imagen) , " + 
+    "titulo = COALESCE(?, titulo), " + "tipo = COALESCE(?, tipo), "+ "fecha = COALESCE(?, fecha), " + 
+    "hora = COALESCE(?, hora), " + "precio = COALESCE(?, precio)," +
+    "localizacion = COALESCE(?, localizacion), " + "maxperros = COALESCE(?, maxperros), "+ "informacion = COALESCE(?, informacion)," + " id_usuario = COALESCE(?, id_usuario)   WHERE id_actividades = ?";
+    console.log(sql); 
+    connection.query(sql, params,function (err, result) 
+    {
+        if (err) 
+            console.log(err);
+        else 
+        {
+            console.log("Actividad modificada");
+            response.send(result);
+        }
+    })
+    
+}
 
-module.exports={getAllActi,getOneActi,postActiv,getApun,postApun,delApun,getCreadas}
+module.exports={getAllActi,getOneActi,postActiv,getApun,postApun,delApun,getCreadas,putCreadas,getCreadas2}
