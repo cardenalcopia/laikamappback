@@ -74,7 +74,7 @@ function getApun(request,response)
 }
 function postApun ( request,response)
 {
-    let sql ="INSERT INTO apuntadas (id_actividad,id_usuario)"+
+    let sql ="INSERT INTO apuntadas (id_actividades,id_usuario)"+
     "VALUES ('" + request.body.id_actividades + "', '" +
     request.body.id_usuario+ "')"; 
     console.log(sql);
