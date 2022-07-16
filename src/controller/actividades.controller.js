@@ -31,7 +31,7 @@ function getOneActi(request,response)
 }
 function postActiv(request,response)
 {
-    let sql = "INSERT INTO actividades (imagen,titulo,tipo,fecha,hora,precio,localizacion,maxperros,informacion,id_usuario)" + 
+    let sql = "INSERT INTO actividades (imagen,titulo,tipo,fecha,hora,precio,localizacion,maxperros,informacion,id_usuario,disponibles)" + 
     "VALUES ('" + request.body.imagen + "', '" +
                     request.body.titulo + "', '" +
                     request.body.tipo + "', '" +
@@ -41,7 +41,8 @@ function postActiv(request,response)
                     request.body.localizacion + "', '" +
                     request.body.maxperros + "', '" +
                     request.body.informacion + "', '" +
-                    request.body.id_usuario + "')"; 
+                    request.body.id_usuario + "', '" +
+                    request.body.disponibles + "')"; 
                     console.log(sql);
                     connection.query(sql, (err, result) => {
                         if( err ){
@@ -90,6 +91,37 @@ function postApun ( request,response)
             else{
                 response.send(result);
             }
+        }
+    })
+}
+
+function putDisponibles(request,response){
+    let id_actividades = request.body.id_actividades ? request.body.id_actividades : null;
+    let imagen = request.body.imagen? request.body.imagen:null;
+    let titulo = request.body.titulo ? request.body.titulo: null;
+    let tipo = request.body.tipo ? request.body.tipo : null;
+    let fecha = request.body.fecha ? request.body.fecha : null;
+    let hora = request.body.hora ? request.body.hora : null;
+    let precio = request.body.precio ? request.body.precio : null;
+    let localizacion = request.body.localizacion ? request.body.localizacion : null;
+    let maxperros = request.body.maxperros ? request.body.maxperros : null;
+    let informacion = request.body.informacion ? request.body.informacion : null;
+    let id_usuario = request.body.id_usuario ? request.body.id_usuario : null;
+    let disponibles = request.body.disponibles ? request.body.disponibles : null;
+    console.log(id_actividades);
+    console.log(disponibles);
+   
+    let params =[disponibles,id_actividades]
+    let sql = "UPDATE actividades SET disponibles = COALESCE(?, disponibles)   WHERE id_actividades = ?";
+    console.log(sql); 
+    connection.query(sql, params,function (err, result) 
+    {
+        if (err) 
+            console.log(err);
+        else 
+        {
+            console.log("Actividad modificada");
+            response.send(result);
         }
     })
 }
@@ -165,12 +197,13 @@ function putCreadas(request,response)
     let maxperros = request.body.maxperros ? request.body.maxperros : null;
     let informacion = request.body.informacion ? request.body.informacion : null;
     let id_usuario = request.body.id_usuario ? request.body.id_usuario : null;
+    let disponibles = request.body.disponibles ? request.body.disponibles : null;
    
-    let params =[imagen,titulo,tipo,fecha,hora,precio,localizacion,maxperros,informacion,id_usuario,id_actividad,]
+    let params =[imagen,titulo,tipo,fecha,hora,precio,localizacion,maxperros,informacion,id_usuario,disponibles,id_actividad]
     let sql = "UPDATE actividades SET imagen = COALESCE(?, imagen) , " + 
     "titulo = COALESCE(?, titulo), " + "tipo = COALESCE(?, tipo), "+ "fecha = COALESCE(?, fecha), " + 
     "hora = COALESCE(?, hora), " + "precio = COALESCE(?, precio)," +
-    "localizacion = COALESCE(?, localizacion), " + "maxperros = COALESCE(?, maxperros), "+ "informacion = COALESCE(?, informacion)," + " id_usuario = COALESCE(?, id_usuario)   WHERE id_actividades = ?";
+    "localizacion = COALESCE(?, localizacion), " + "maxperros = COALESCE(?, maxperros), "+ "informacion = COALESCE(?, informacion)," + "id_usuario = COALESCE(?, id_usuario)" + "disponibles = COALESCE(?, disponibles)   WHERE id_actividades = ?";
     console.log(sql); 
     connection.query(sql, params,function (err, result) 
     {
@@ -185,4 +218,4 @@ function putCreadas(request,response)
     
 }
 
-module.exports={getAllActi,getOneActi,postActiv,getApun,postApun,delApun,getCreadas,putCreadas,getCreadas2}
+module.exports={getAllActi,getOneActi,postActiv,getApun,postApun,putDisponibles,delApun,getCreadas,putCreadas,getCreadas2}
