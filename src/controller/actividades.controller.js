@@ -60,7 +60,7 @@ function postActiv(request,response)
 }
 function getApun(request,response)
 {
-    let sql = "SELECT  usuario.nombre, actividades.titulo, actividades.tipo, actividades.fecha, actividades.hora, actividades.localizacion FROM actividades JOIN apuntadas ON (actividades.id_actividades = apuntadas.id_actividades) JOIN usuario ON (apuntadas.id_usuario= usuario.id_usuario) WHERE usuario.id_usuario='" + request.query.id_usuario + "'"
+    let sql = "SELECT  usuario.nombre, actividades.id_actividades, actividades.titulo, actividades.tipo, actividades.fecha, actividades.hora, actividades.localizacion FROM actividades JOIN apuntadas ON (actividades.id_actividades = apuntadas.id_actividades) JOIN usuario ON (apuntadas.id_usuario= usuario.id_usuario) WHERE usuario.id_usuario='" + request.query.id_usuario + "'"
     
 
     connection.query(sql, (err, result) => {
@@ -95,6 +95,10 @@ function postApun ( request,response)
 }
 function delApun (request,response)
 {
+    console.log("request.query.id_actividades");
+    console.log(request.query.id_actividades);
+    console.log("request.query.id_usuario");
+    console.log(request.query.id_usuario);
 let sql = "DELETE FROM apuntadas WHERE(id_actividades ='"+request.query.id_actividades+"'AND id_usuario= '"+request.query.id_usuario+"')"
 connection.query(sql, (err, result) => {
     if( err ){
