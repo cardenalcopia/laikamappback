@@ -31,7 +31,7 @@ function getOneActi(request,response)
 }
 function postActiv(request,response)
 {
-    let sql = "INSERT INTO actividades (imagen,titulo,tipo,fecha,hora,precio,localizacion,maxperros,informacion,id_usuario,disponibles)" + 
+    let sql = "INSERT INTO actividades (imagen,titulo,tipo,fecha,hora,precio,localizacion,maxperros,informacion,id_creador,disponibles)" + 
     "VALUES ('" + request.body.imagen + "', '" +
                     request.body.titulo + "', '" +
                     request.body.tipo + "', '" +
@@ -41,7 +41,7 @@ function postActiv(request,response)
                     request.body.localizacion + "', '" +
                     request.body.maxperros + "', '" +
                     request.body.informacion + "', '" +
-                    request.body.id_usuario + "', '" +
+                    request.body.id_creador + "', '" +
                     request.body.disponibles + "')"; 
                     console.log(sql);
                     connection.query(sql, (err, result) => {
@@ -178,7 +178,7 @@ connection.query(sql, (err, result) => {
 }
 function getCreadas2 ( request,response)
 {
-    let sql = " SELECT actividades.titulo , actividades.tipo ,actividades.fecha ,actividades.localizacion,actividades.informacion ,usuario.nombre, usuario.apellidos FROM actividades JOIN usuario ON(actividades.id_usuario = usuario.id_usuario) WHERE actividades.id_usuario= '"+request.query.id_usuario+"' "
+    let sql = " SELECT actividades.titulo , actividades.tipo ,actividades.fecha ,actividades.localizacion,actividades.informacion ,usuario.nombre, usuario.apellidos FROM actividades JOIN usuario ON(actividades.id_creador = usuario.id_usuario) WHERE actividades.id_creador="+request.query.id_creador
     connection.query(sql, (err, result) => {
         if( err ){
             console.log( err );
@@ -196,7 +196,7 @@ function getCreadas2 ( request,response)
 }
 function getCreadas ( request,response)
 {
-    let sql = " SELECT actividades.titulo , actividades.tipo ,actividades.fecha ,actividades.localizacion,actividades.informacion ,usuario.nombre, usuario.apellidos FROM actividades JOIN usuario ON(actividades.id_usuario = usuario.id_usuario) WHERE actividades.id_usuario= '"+request.query.id_usuario+"' "
+    let sql = " SELECT actividades.titulo , actividades.tipo ,actividades.fecha ,actividades.localizacion,actividades.informacion ,usuario.nombre, usuario.apellidos FROM actividades JOIN usuario ON(actividades.id_creador = usuario.id_usuario) WHERE actividades.id_creador="+request.query.id_creador
     connection.query(sql, (err, result) => {
         if( err ){
             console.log( err );
@@ -214,7 +214,7 @@ function getCreadas ( request,response)
 }
 function putCreadas(request,response)
 {
-    let id_actividad = request.body.id_actividad ? request.body.id_actividad : null;
+    let id_actividades = request.body.id_actividades ? request.body.id_actividades : null;
     let imagen = request.body.imagen? request.body.imagen:null;
     let titulo = request.body.titulo ? request.body.titulo: null;
     let tipo = request.body.tipo ? request.body.tipo : null;
@@ -224,14 +224,16 @@ function putCreadas(request,response)
     let localizacion = request.body.localizacion ? request.body.localizacion : null;
     let maxperros = request.body.maxperros ? request.body.maxperros : null;
     let informacion = request.body.informacion ? request.body.informacion : null;
-    let id_usuario = request.body.id_usuario ? request.body.id_usuario : null;
+    let id_creador = request.body.id_creador ? request.body.id_creador : null;
     let disponibles = request.body.disponibles ? request.body.disponibles : null;
+
+    console.log(id_actividades);
    
-    let params =[imagen,titulo,tipo,fecha,hora,precio,localizacion,maxperros,informacion,id_usuario,disponibles,id_actividad]
+    let params =[imagen,titulo,tipo,fecha,hora,precio,localizacion,maxperros,informacion,id_creador,disponibles,id_actividades]
     let sql = "UPDATE actividades SET imagen = COALESCE(?, imagen) , " + 
     "titulo = COALESCE(?, titulo), " + "tipo = COALESCE(?, tipo), "+ "fecha = COALESCE(?, fecha), " + 
     "hora = COALESCE(?, hora), " + "precio = COALESCE(?, precio)," +
-    "localizacion = COALESCE(?, localizacion), " + "maxperros = COALESCE(?, maxperros), "+ "informacion = COALESCE(?, informacion)," + "id_usuario = COALESCE(?, id_usuario)" + "disponibles = COALESCE(?, disponibles)   WHERE id_actividades = ?";
+    "localizacion = COALESCE(?, localizacion), " + "maxperros = COALESCE(?, maxperros), "+ "informacion = COALESCE(?, informacion)," + "id_creador = COALESCE(?, id_creador)" + "disponibles = COALESCE(?, disponibles)   WHERE id_actividades = ?";
     console.log(sql); 
     connection.query(sql, params,function (err, result) 
     {
