@@ -235,7 +235,7 @@ function putCreadas(request,response)
     "hora = COALESCE(?, hora), " + "precio = COALESCE(?, precio)," +
     "localizacion = COALESCE(?, localizacion), " + "maxperros = COALESCE(?, maxperros), "+ "informacion = COALESCE(?, informacion)," + "id_creador = COALESCE(?, id_creador)," + "disponibles = COALESCE(?, disponibles)   WHERE id_actividades = ?";
     console.log(sql); 
-    connection.query(sql, params,function (err, result) 
+    connection.query(sql, params,function (err, result)  
     {
         if (err) 
             console.log(err);
