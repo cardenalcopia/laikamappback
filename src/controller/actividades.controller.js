@@ -178,7 +178,7 @@ connection.query(sql, (err, result) => {
 }
 function getCreadas2 ( request,response)
 {
-    let sql = " SELECT actividades.titulo , actividades.tipo ,actividades.fecha ,actividades.localizacion,actividades.informacion ,usuario.nombre, usuario.apellidos FROM actividades JOIN usuario ON(actividades.id_creador = usuario.id_usuario) WHERE actividades.id_creador="+request.query.id_creador
+    let sql = " SELECT actividades.id_actividades, actividades.titulo , actividades.tipo ,actividades.fecha ,actividades.localizacion,actividades.informacion ,usuario.nombre, usuario.apellidos FROM actividades JOIN usuario ON(actividades.id_creador = usuario.id_usuario) WHERE actividades.id_creador="+request.query.id_creador
     connection.query(sql, (err, result) => {
         if( err ){
             console.log( err );
@@ -196,7 +196,7 @@ function getCreadas2 ( request,response)
 }
 function getCreadas ( request,response)
 {
-    let sql = " SELECT actividades.titulo , actividades.tipo ,actividades.fecha ,actividades.localizacion,actividades.informacion ,usuario.nombre, usuario.apellidos FROM actividades JOIN usuario ON(actividades.id_creador = usuario.id_usuario) WHERE actividades.id_creador="+request.query.id_creador
+    let sql = " SELECT actividades.id_actividades, actividades.titulo , actividades.tipo ,actividades.fecha ,actividades.localizacion,actividades.informacion ,usuario.nombre, usuario.apellidos FROM actividades JOIN usuario ON(actividades.id_creador = usuario.id_usuario) WHERE actividades.id_creador="+request.query.id_creador
     connection.query(sql, (err, result) => {
         if( err ){
             console.log( err );
@@ -233,7 +233,7 @@ function putCreadas(request,response)
     let sql = "UPDATE actividades SET imagen = COALESCE(?, imagen) , " + 
     "titulo = COALESCE(?, titulo), " + "tipo = COALESCE(?, tipo), "+ "fecha = COALESCE(?, fecha), " + 
     "hora = COALESCE(?, hora), " + "precio = COALESCE(?, precio)," +
-    "localizacion = COALESCE(?, localizacion), " + "maxperros = COALESCE(?, maxperros), "+ "informacion = COALESCE(?, informacion)," + "id_creador = COALESCE(?, id_creador)" + "disponibles = COALESCE(?, disponibles)   WHERE id_actividades = ?";
+    "localizacion = COALESCE(?, localizacion), " + "maxperros = COALESCE(?, maxperros), "+ "informacion = COALESCE(?, informacion)," + "id_creador = COALESCE(?, id_creador)," + "disponibles = COALESCE(?, disponibles)   WHERE id_actividades = ?";
     console.log(sql); 
     connection.query(sql, params,function (err, result) 
     {
