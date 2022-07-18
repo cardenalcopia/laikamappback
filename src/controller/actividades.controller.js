@@ -75,56 +75,84 @@ function getApun(request,response)
 }
 function postApun ( request,response)
 {
+
     let sql ="INSERT INTO apuntadas (id_actividades,id_usuario)"+
     "VALUES ('" + request.body.id_actividades + "', '" +
     request.body.id_usuario+ "')"; 
+
     console.log(sql);
-    connection.query(sql, (err, result) => {
-        if( err ){
-            console.log( err );
+    
+    connection.query(sql, (err1, result1) => {
+        if( err1 )
+        {
+            console.log( err1 );
         }
         else{
-            console.log(result);
-            if(result){
-                response.send(result);
-            }
-            else{
-                response.send(result);
-            }
+        sql ="UPDATE actividades JOIN apuntadas ON (actividades.id_actividades= apuntadas.id_actividades ) JOIN usuario ON (apuntadas.id_usuario=usuario.id_usuario) SET disponibles = disponibles-usuario.num_perros WHERE actividades.id_actividades ="+request.body.id_actividades +"  AND usuario.id_usuario=" + request.body.id_usuario
+        connection.query(sql, function (err2, result2) 
+            {
+                if ( err2 ) 
+                    console.log( err2 );
+                else 
+                {
+                    console.log("Actividad modificada");
+                    // response.send(result);
+                    sql="INSERT INTO chat (titulo,creador,id_usuario)" +
+                    "VALUES ('"+ request.body.titulo+ "','" + request.body.id_creador +"','" + request.body.id_usuario +"')"
+                    connection.query(sql,function (err3, result3) 
+                    {
+                        if (err3)
+                        {
+                            console.log(err);
+
+                        } 
+                        else 
+                        {
+                            console.log(result1);
+                    
+                            response.send(result1);
+                        }
+                        
+                    })
+                    
+                }
+            })
+        
         }
     })
+    
 }
 
-function putDisponibles(request,response){
-    let id_actividades = request.body.id_actividades ? request.body.id_actividades : null;
-    let imagen = request.body.imagen? request.body.imagen:null;
-    let titulo = request.body.titulo ? request.body.titulo: null;
-    let tipo = request.body.tipo ? request.body.tipo : null;
-    let fecha = request.body.fecha ? request.body.fecha : null;
-    let hora = request.body.hora ? request.body.hora : null;
-    let precio = request.body.precio ? request.body.precio : null;
-    let localizacion = request.body.localizacion ? request.body.localizacion : null;
-    let maxperros = request.body.maxperros ? request.body.maxperros : null;
-    let informacion = request.body.informacion ? request.body.informacion : null;
-    let id_usuario = request.body.id_usuario ? request.body.id_usuario : null;
-    let disponibles = request.body.disponibles ? request.body.disponibles : null;
-    console.log(id_actividades);
-    console.log(disponibles);
+// function putDisponibles(request,response){
+//     let id_actividades = request.body.id_actividades ? request.body.id_actividades : null;
+//     let imagen = request.body.imagen? request.body.imagen:null;
+//     let titulo = request.body.titulo ? request.body.titulo: null;
+//     let tipo = request.body.tipo ? request.body.tipo : null;
+//     let fecha = request.body.fecha ? request.body.fecha : null;
+//     let hora = request.body.hora ? request.body.hora : null;
+//     let precio = request.body.precio ? request.body.precio : null;
+//     let localizacion = request.body.localizacion ? request.body.localizacion : null;
+//     let maxperros = request.body.maxperros ? request.body.maxperros : null;
+//     let informacion = request.body.informacion ? request.body.informacion : null;
+//     let id_usuario = request.body.id_usuario ? request.body.id_usuario : null;
+//     let disponibles = request.body.disponibles ? request.body.disponibles : null;
+//     console.log(id_actividades);
+//     console.log(disponibles);
    
-    let params =[disponibles,id_actividades]
-    let sql = "UPDATE actividades SET disponibles = COALESCE(?, disponibles)   WHERE id_actividades = ?";
-    console.log(sql); 
-    connection.query(sql, params,function (err, result) 
-    {
-        if (err) 
-            console.log(err);
-        else 
-        {
-            console.log("Actividad modificada");
-            response.send(result);
-        }
-    })
-}
+//     let params =[disponibles,id_actividades]
+//     let sql = "UPDATE actividades SET disponibles = COALESCE(?, disponibles)   WHERE id_actividades = ?";
+//     console.log(sql); 
+//     connection.query(sql, params,function (err, result) 
+//     {
+//         if (err) 
+//             console.log(err);
+//         else 
+//         {
+//             console.log("Actividad modificada");
+//             response.send(result);
+//         }
+//     })
+// }
 function delApun (request,response)
 {
     console.log("request.query.id_actividades");
@@ -218,4 +246,4 @@ function putCreadas(request,response)
     
 }
 
-module.exports={getAllActi,getOneActi,postActiv,getApun,postApun,putDisponibles,delApun,getCreadas,putCreadas,getCreadas2}
+module.exports={getAllActi,getOneActi,postActiv,getApun,postApun,delApun,getCreadas,putCreadas,getCreadas2}
