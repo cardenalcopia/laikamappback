@@ -159,19 +159,30 @@ function delApun (request,response)
     console.log(request.query.id_actividades);
     console.log("request.query.id_usuario");
     console.log(request.query.id_usuario);
-let sql = "DELETE FROM apuntadas WHERE(id_actividades ='"+request.query.id_actividades+"'AND id_usuario= '"+request.query.id_usuario+"')"
+let sql ="UPDATE actividades JOIN apuntadas ON (actividades.id_actividades= apuntadas.id_actividades ) JOIN usuario ON (apuntadas.id_usuario=usuario.id_usuario) SET disponibles = disponibles+usuario.num_perros WHERE actividades.id_actividades ="+request.query.id_actividades +"  AND usuario.id_usuario=" + request.query.id_usuario
 connection.query(sql, (err, result) => {
     if( err ){
         console.log( err );
     }
     else{
-        console.log(result);
-        if(result){
-            response.send(result);
-        }
-        else{
-            response.send(result);
-        }
+        // 
+        sql ="DELETE FROM apuntadas WHERE(id_actividades ='"+request.query.id_actividades+"'AND id_usuario= '"+request.query.id_usuario+"')"
+ 
+        connection.query(sql, function (err2, result2) 
+            {
+                if ( err2 ) 
+                    console.log( err2 );
+                else{ 
+        // 
+                    console.log(result);
+                    if(result){
+                        response.send(result);
+                    }
+                    else{
+                        response.send(result);
+                    }
+                }
+            })
     }
 })
 
