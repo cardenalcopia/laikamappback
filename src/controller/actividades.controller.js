@@ -2,7 +2,7 @@ const { request } = require("express");
 const connection =require("../database")
 function getAllActi(request,response)
 {
-    let sql = "SELECT * FROM actividades WHERE tipo='" + request.query.tipo +"' ORDER BY maxperros ASC LIMIT 5 ";/*repasar el orden */
+    let sql = "SELECT * FROM actividades WHERE tipo='" + request.query.tipo +"' ORDER BY disponibles DESC LIMIT 5 ";/*repasar el orden */
     
 
     connection.query(sql, (err, result) => {
@@ -61,7 +61,7 @@ function postActiv(request,response)
 }
 function getApun(request,response)
 {
-    let sql = "SELECT  usuario.nombre, actividades.id_actividades, actividades.titulo, actividades.tipo, actividades.fecha, actividades.hora, actividades.localizacion FROM actividades JOIN apuntadas ON (actividades.id_actividades = apuntadas.id_actividades) JOIN usuario ON (apuntadas.id_usuario= usuario.id_usuario) WHERE usuario.id_usuario='" + request.query.id_usuario + "'"
+    let sql = "SELECT  usuario.nombre, usuario.id_usuario, actividades.imagen, actividades.id_actividades, actividades.titulo, actividades.tipo, actividades.fecha, actividades.hora, actividades.localizacion FROM actividades JOIN apuntadas ON (actividades.id_actividades = apuntadas.id_actividades) JOIN usuario ON (apuntadas.id_usuario= usuario.id_usuario) WHERE usuario.id_usuario='" + request.query.id_usuario + "'"
     
 
     connection.query(sql, (err, result) => {
@@ -189,7 +189,7 @@ connection.query(sql, (err, result) => {
 }
 function getCreadas2 ( request,response)
 {
-    let sql = " SELECT actividades.id_actividades, actividades.titulo , actividades.tipo ,actividades.fecha ,actividades.localizacion,actividades.informacion ,usuario.nombre, usuario.apellidos FROM actividades JOIN usuario ON(actividades.id_creador = usuario.id_usuario) WHERE actividades.id_creador="+request.query.id_creador
+    let sql = " SELECT actividades.id_actividades, actividades.imagen, actividades.titulo , actividades.tipo ,actividades.fecha ,actividades.localizacion,actividades.informacion ,usuario.nombre, usuario.apellidos FROM actividades JOIN usuario ON(actividades.id_creador = usuario.id_usuario) WHERE actividades.id_creador="+request.query.id_creador
     connection.query(sql, (err, result) => {
         if( err ){
             console.log( err );
@@ -207,7 +207,7 @@ function getCreadas2 ( request,response)
 }
 function getCreadas ( request,response)
 {
-    let sql = " SELECT actividades.id_actividades, actividades.titulo , actividades.tipo ,actividades.fecha ,actividades.localizacion,actividades.informacion ,usuario.nombre, usuario.apellidos FROM actividades JOIN usuario ON(actividades.id_creador = usuario.id_usuario) WHERE actividades.id_creador="+request.query.id_creador
+    let sql = " SELECT actividades.id_actividades, actividades.imagen, actividades.titulo , actividades.tipo ,actividades.fecha ,actividades.localizacion,actividades.informacion ,usuario.nombre, usuario.apellidos FROM actividades JOIN usuario ON(actividades.id_creador = usuario.id_usuario) WHERE actividades.id_creador="+request.query.id_creador
     connection.query(sql, (err, result) => {
         if( err ){
             console.log( err );
