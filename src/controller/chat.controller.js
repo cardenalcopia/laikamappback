@@ -2,7 +2,7 @@ const { request } = require("express");
 const connection =require("../database")
 function getChats(request,response){
    
-    let sql = "SELECT * FROM chat"
+    let sql = "SELECT * FROM chat WHERE id_creador = "+request.query.id_usuario+"OR id_usuario ="+ request.query.id_usuario
     connection.query(sql, function(err,result )
             {
                 if(err){
