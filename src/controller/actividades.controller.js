@@ -2,7 +2,8 @@ const { request } = require("express");
 const connection =require("../database")
 function getAllActi(request,response)
 {
-    let sql = "SELECT * FROM actividades WHERE tipo='" + request.query.tipo +"' ORDER BY maxperros ASC LIMIT 5 ";/*repasar el orden */
+    // let sql = "SELECT * FROM actividades WHERE tipo='" + request.query.tipo +"' ORDER BY disponibles DESC LIMIT 5 ";/*repasar el orden */
+    let sql = "SELECT  id_actividades, imagen, titulo, tipo, fecha, hora, precio, localizacion, maxperros, informacion, id_creador, disponibles, usuario.nombre FROM actividades JOIN usuario ON (actividades.id_creador = usuario.id_usuario) WHERE tipo='" + request.query.tipo +"' ORDER BY disponibles DESC LIMIT 5 ";/*repasar el orden */
     
 
     connection.query(sql, (err, result) => {
@@ -61,7 +62,7 @@ function postActiv(request,response)
 }
 function getApun(request,response)
 {
-    let sql = "SELECT  usuario.nombre, actividades.id_actividades, actividades.titulo, actividades.tipo, actividades.fecha, actividades.hora, actividades.localizacion FROM actividades JOIN apuntadas ON (actividades.id_actividades = apuntadas.id_actividades) JOIN usuario ON (apuntadas.id_usuario= usuario.id_usuario) WHERE usuario.id_usuario='" + request.query.id_usuario + "'"
+    let sql = "SELECT  usuario.nombre, usuario.id_usuario, actividades.imagen, actividades.id_actividades, actividades.titulo, actividades.tipo, actividades.fecha, actividades.hora, actividades.localizacion FROM actividades JOIN apuntadas ON (actividades.id_actividades = apuntadas.id_actividades) JOIN usuario ON (apuntadas.id_usuario= usuario.id_usuario) WHERE usuario.id_usuario='" + request.query.id_usuario + "'"
     
 
     connection.query(sql, (err, result) => {
@@ -159,26 +160,37 @@ function delApun (request,response)
     console.log(request.query.id_actividades);
     console.log("request.query.id_usuario");
     console.log(request.query.id_usuario);
-let sql = "DELETE FROM apuntadas WHERE(id_actividades ='"+request.query.id_actividades+"'AND id_usuario= '"+request.query.id_usuario+"')"
+let sql ="UPDATE actividades JOIN apuntadas ON (actividades.id_actividades= apuntadas.id_actividades ) JOIN usuario ON (apuntadas.id_usuario=usuario.id_usuario) SET disponibles = disponibles+usuario.num_perros WHERE actividades.id_actividades ="+request.query.id_actividades +"  AND usuario.id_usuario=" + request.query.id_usuario
 connection.query(sql, (err, result) => {
     if( err ){
         console.log( err );
     }
     else{
-        console.log(result);
-        if(result){
-            response.send(result);
-        }
-        else{
-            response.send(result);
-        }
+        // 
+        sql ="DELETE FROM apuntadas WHERE(id_actividades ='"+request.query.id_actividades+"'AND id_usuario= '"+request.query.id_usuario+"')"
+ 
+        connection.query(sql, function (err2, result2) 
+            {
+                if ( err2 ) 
+                    console.log( err2 );
+                else{ 
+        // 
+                    console.log(result);
+                    if(result){
+                        response.send(result);
+                    }
+                    else{
+                        response.send(result);
+                    }
+                }
+            })
     }
 })
 
 }
 function getCreadas2 ( request,response)
 {
-    let sql = " SELECT actividades.id_actividades, actividades.titulo , actividades.tipo ,actividades.fecha ,actividades.localizacion,actividades.informacion ,usuario.nombre, usuario.apellidos FROM actividades JOIN usuario ON(actividades.id_creador = usuario.id_usuario) WHERE actividades.id_creador="+request.query.id_creador
+    let sql = " SELECT actividades.id_actividades, actividades.imagen, actividades.titulo , actividades.tipo ,actividades.fecha ,actividades.localizacion,actividades.informacion ,usuario.nombre, usuario.apellidos FROM actividades JOIN usuario ON(actividades.id_creador = usuario.id_usuario) WHERE actividades.id_creador="+request.query.id_creador
     connection.query(sql, (err, result) => {
         if( err ){
             console.log( err );
@@ -196,7 +208,7 @@ function getCreadas2 ( request,response)
 }
 function getCreadas ( request,response)
 {
-    let sql = " SELECT actividades.id_actividades, actividades.titulo , actividades.tipo ,actividades.fecha ,actividades.localizacion,actividades.informacion ,usuario.nombre, usuario.apellidos FROM actividades JOIN usuario ON(actividades.id_creador = usuario.id_usuario) WHERE actividades.id_creador="+request.query.id_creador
+    let sql = " SELECT actividades.id_actividades, actividades.imagen, actividades.titulo , actividades.tipo ,actividades.fecha ,actividades.localizacion,actividades.informacion ,usuario.nombre, usuario.apellidos FROM actividades JOIN usuario ON(actividades.id_creador = usuario.id_usuario) WHERE actividades.id_creador="+request.query.id_creador
     connection.query(sql, (err, result) => {
         if( err ){
             console.log( err );

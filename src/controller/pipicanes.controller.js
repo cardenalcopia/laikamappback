@@ -2,7 +2,7 @@ const { request } = require("express");
 const connection =require("../database")
 function getAllPipi(request,response)
 {
-    let sql = "SELECT * FROM pipican ORDER BY id_pipican ASC LIMIT 5 ";
+    let sql = "SELECT * FROM pipican ORDER BY rating DESC LIMIT 5 ";
     
 
     connection.query(sql, (err, result) => {
@@ -17,9 +17,14 @@ function getAllPipi(request,response)
 }
 function getOnePipi(request,response)
 {
-    
+    let sql="";
+    if(request.query.id_usuario){
+        sql= 'SELECT * FROM laikamapp.rating WHERE id_usuario =' + request.query.id_usuario
+    }else if(request.query.id_pipican){
+
+        sql = 'SELECT AVG(calificacion) AS marks FROM rating WHERE id_pipican =' + request.query.id_pipican
+    }
     // let sql =  "SELECT * FROM pipican WHERE id_pipican='" + request.query.id_pipican +"'";
-    let sql = 'SELECT AVG(calificacion) AS marks FROM rating WHERE id_pipican =' + request.query.id_pipican
     
     connection.query(sql, (err, result) => {
         if(err){
