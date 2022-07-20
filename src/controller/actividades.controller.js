@@ -2,7 +2,6 @@ const { request } = require("express");
 const connection =require("../database")
 function getAllActi(request,response)
 {
-    // let sql = "SELECT * FROM actividades WHERE tipo='" + request.query.tipo +"' ORDER BY disponibles DESC LIMIT 5 ";/*repasar el orden */
     let sql = "SELECT  id_actividades, imagen, titulo, tipo, fecha, hora, precio, localizacion, maxperros, informacion, id_creador, disponibles, usuario.nombre FROM actividades JOIN usuario ON (actividades.id_creador = usuario.id_usuario) WHERE tipo='" + request.query.tipo +"' ORDER BY disponibles DESC LIMIT 5 ";/*repasar el orden */
     
 
