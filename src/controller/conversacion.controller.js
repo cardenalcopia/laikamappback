@@ -2,7 +2,7 @@ const { request } = require("express");
 const connection =require("../database")
 function getConv(request,response){
     
-    let sql = "SELECT * FROM conversacion "
+    let sql = "SELECT * FROM conversacion WHERE id_chat="+request.query.id_chat
     connection.query(sql, function(err,result )
             {
                 if(err){
@@ -22,8 +22,8 @@ function getConv(request,response){
 function convPost(request,response)
 {
     console.log(request.body)
-    let sql= "INSERT INTO conversacion (emisor,mensaje,id_usuario,id_chat)" +
-        "VALUES ('"+ request.body.emisor+ "','" + request.body.mensaje +"','" + request.body.id_usuario+"','"+ request.body.id_chat+"')"
+    let sql= "INSERT INTO conversacion (mensaje,id_usuario,id_chat)" +
+        "VALUES ('" + request.body.mensaje +"','" + request.body.id_usuario+"','"+ request.body.id_chat+"')"
         console.log(sql);
         connection.query(sql, function(err,result )
         {
